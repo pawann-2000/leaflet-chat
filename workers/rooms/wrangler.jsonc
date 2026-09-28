@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "leaflet-rooms",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [{ "pattern": "rooms.leaflet.chat", "custom_domain": true }],
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "RoomDurableObject" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RoomDurableObject"] }],
+  "observability": {
+    // Request metrics only; the worker never logs payloads or room ids.
+    "enabled": true,
+    "logs": { "enabled": false }
+  }
+}
