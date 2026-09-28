@@ -1,0 +1,313 @@
+@import "tailwindcss";
+@import "../features/reader/reader.css";
+@import "../features/library/library.css";
+@import "../features/reading/reading.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Leaflet design tokens — "paper".
+ *
+ * Light mode is warm cream paper with deep-ink text; night mode is dark paper
+ * (warm charcoal, never pure black) with cream ink. The accent is a coral
+ * ribbon colour, the highlight is marker gold. Everything in the app (shell,
+ * library, reader chrome, drawers) reads these tokens; publication pages
+ * read the `--chapter-*` tokens in reader.css, which derive from the same
+ * hues.
+ */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+  --font-sans: var(--font-ui);
+  --font-serif: var(--font-book);
+  --font-display: var(--font-book);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-coral: var(--coral);
+  --color-coral-foreground: var(--coral-foreground);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-leaf: var(--leaf);
+  --color-desk: var(--desk);
+  --color-desk-foreground: var(--desk-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-paper: var(--shadow-paper);
+  --shadow-lift: var(--shadow-lift);
+  --ease-out-quart: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-sparkle: sparkle 900ms var(--ease-out-quart) both;
+  --animate-rise: rise 480ms var(--ease-out-quart) both;
+}
+
+:root {
+  --radius: 0.75rem;
+  --font-book:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Charter",
+    "Bitstream Charter", "Source Serif Pro", "P052", Georgia, serif;
+  --font-ui:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+
+  /* paper */
+  --background: oklch(0.965 0.014 86);
+  --foreground: oklch(0.25 0.022 60);
+  --card: oklch(0.985 0.01 90);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.985 0.01 90);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.3 0.03 52);
+  --primary-foreground: oklch(0.975 0.012 88);
+  --secondary: oklch(0.935 0.018 84);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.93 0.018 84);
+  --muted-foreground: oklch(0.5 0.028 62);
+  --accent: oklch(0.925 0.02 82);
+  --accent-foreground: var(--foreground);
+  --coral: oklch(0.66 0.16 40);
+  --coral-foreground: oklch(0.985 0.01 90);
+  --gold: oklch(0.86 0.13 92);
+  --gold-foreground: oklch(0.32 0.05 70);
+  --leaf: oklch(0.62 0.11 150);
+  --desk: oklch(0.36 0.045 58);
+  --desk-foreground: oklch(0.96 0.02 85);
+  --destructive: oklch(0.58 0.2 27);
+  --border: oklch(0.875 0.022 80);
+  --input: oklch(0.875 0.022 80);
+  --ring: oklch(0.66 0.16 40 / 55%);
+  --chart-1: var(--coral);
+  --chart-2: var(--leaf);
+  --chart-3: oklch(0.55 0.12 250);
+  --chart-4: var(--gold);
+  --chart-5: oklch(0.6 0.15 320);
+  --sidebar: oklch(0.955 0.016 85);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(0.915 0.02 82);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: oklch(0.885 0.02 80);
+  --sidebar-ring: var(--ring);
+  --shadow-paper:
+    0 1px 0 oklch(1 0 0 / 60%) inset, 0 1px 2px oklch(0.3 0.03 60 / 8%),
+    0 8px 24px -12px oklch(0.3 0.03 60 / 25%);
+  --shadow-lift:
+    0 2px 4px oklch(0.3 0.03 60 / 8%),
+    0 18px 40px -16px oklch(0.3 0.03 60 / 35%);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.12;
+  color-scheme: light;
+}
+
+.dark {
+  /* dark paper */
+  --background: oklch(0.225 0.016 66);
+  --foreground: oklch(0.905 0.024 86);
+  --card: oklch(0.265 0.018 66);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.275 0.018 66);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.9 0.03 86);
+  --primary-foreground: oklch(0.23 0.02 66);
+  --secondary: oklch(0.31 0.018 66);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.305 0.018 66);
+  --muted-foreground: oklch(0.72 0.022 82);
+  --accent: oklch(0.32 0.02 66);
+  --accent-foreground: var(--foreground);
+  --coral: oklch(0.73 0.15 42);
+  --coral-foreground: oklch(0.2 0.02 60);
+  --gold: oklch(0.82 0.12 92);
+  --gold-foreground: oklch(0.25 0.04 70);
+  --leaf: oklch(0.7 0.11 150);
+  --desk: oklch(0.19 0.02 62);
+  --desk-foreground: oklch(0.92 0.02 85);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(0.34 0.02 66);
+  --input: oklch(0.36 0.02 66);
+  --ring: oklch(0.73 0.15 42 / 55%);
+  --sidebar: oklch(0.205 0.016 66);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: oklch(0.29 0.02 66);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: oklch(0.32 0.02 66);
+  --sidebar-ring: var(--ring);
+  --shadow-paper:
+    0 1px 0 oklch(1 0 0 / 5%) inset, 0 1px 2px oklch(0 0 0 / 30%),
+    0 8px 24px -12px oklch(0 0 0 / 55%);
+  --shadow-lift:
+    0 2px 4px oklch(0 0 0 / 30%), 0 18px 40px -16px oklch(0 0 0 / 65%);
+  --grain-opacity: 0.16;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    @apply h-full select-none overscroll-none;
+  }
+  body,
+  #root {
+    @apply h-full overflow-hidden bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-book);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  ::selection {
+    color: var(--foreground);
+    background: color-mix(in oklch, var(--gold) 70%, transparent);
+  }
+}
+
+@layer components {
+  /* A sheet of paper: card surface with a faint grain and soft lift. */
+  .paper {
+    position: relative;
+    color: var(--card-foreground);
+    background: var(--card);
+    box-shadow: var(--shadow-paper);
+    isolation: isolate;
+  }
+  .paper::before,
+  .grain::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    content: "";
+    background-image: var(--grain);
+    border-radius: inherit;
+    opacity: var(--grain-opacity);
+  }
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  /* The reading desk behind books. */
+  .desk {
+    color: var(--desk-foreground);
+    background: radial-gradient(
+      120% 140% at 30% 20%,
+      color-mix(in oklch, var(--desk) 82%, white) 0%,
+      var(--desk) 55%,
+      color-mix(in oklch, var(--desk) 85%, black) 100%
+    );
+  }
+  /* Small caps label used for eyebrows across the app. */
+  .eyebrow {
+    font-family: var(--font-ui);
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .lift {
+    transition:
+      transform 320ms var(--ease-out-quart),
+      box-shadow 320ms var(--ease-out-quart);
+  }
+  .lift:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-3px);
+  }
+  .scrollbar-paper {
+    scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent)
+      transparent;
+    scrollbar-width: thin;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.15) rotate(6deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) rotate(0deg) translateY(-6px);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift,
+  .lift:hover {
+    transform: none;
+    transition: none;
+  }
+}
