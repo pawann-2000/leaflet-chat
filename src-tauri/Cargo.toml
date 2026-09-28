@@ -1,0 +1,20 @@
+[package]
+name = "leaflet-migration"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+leaflet-desktop = { path = "../../../apps/desktop/src-tauri" }
+tauri.workspace = true
+tauri-plugin-dialog.workspace = true
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+
+[lints]
+workspace = true

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Leaflet",
+  "version": "0.1.0",
+  "identifier": "app.leaflet.reader",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Leaflet",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 980,
+        "minHeight": 680,
+        "center": true,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost leaflet-book: http://leaflet-book.localhost; img-src 'self' data: blob: leaflet-book: http://leaflet-book.localhost; font-src 'self' data: leaflet-book: http://leaflet-book.localhost; media-src leaflet-book: http://leaflet-book.localhost; style-src 'self' 'unsafe-inline' leaflet-book: http://leaflet-book.localhost; script-src 'self'; frame-src 'self' data: blob:; object-src 'none'; base-uri 'self' leaflet-book: http://leaflet-book.localhost; form-action 'none'",
+      "capabilities": ["migrated"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Book",
+    "shortDescription": "A private, local-first EPUB reader",
+    "longDescription": "Read EPUB publications and ask local AI models without sending books to the cloud.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}

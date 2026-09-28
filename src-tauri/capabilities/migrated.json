@@ -1,0 +1,6 @@
+{
+  "identifier": "migrated",
+  "description": "Capabilities for the Leaflet application window",
+  "windows": ["main"],
+  "permissions": ["core:default", "dialog:allow-open"]
+}
