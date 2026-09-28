@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+codex-session-*.md
+src-tauri/target
+src-tauri/gen/schemas
+
+.vitest
+.vercel

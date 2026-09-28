@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["ultracite/biome/core", "ultracite/biome/react"],
+  "files": {
+    "includes": [
+      "!**/components/ui",
+      "!**/components/motion",
+      "!**/components/agents",
+      "!**/lib/hooks",
+      "!**/lib/ease.ts",
+      "!**/lib/touch.ts",
+      "!**/lib/presence-gate.tsx"
+    ]
+  }
+}
