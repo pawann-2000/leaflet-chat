@@ -1,0 +1,744 @@
+:root {
+  --ink: oklch(0.26 0.024 60);
+  --ink-soft: oklch(0.34 0.026 60);
+  --paper: oklch(0.955 0.016 86);
+  --warm-white: oklch(0.975 0.014 88);
+  --coral-dark: oklch(0.56 0.15 38);
+}
+
+.reader {
+  container-type: size;
+}
+
+.curl-book {
+  --turn-page-background: #fff;
+  position: relative;
+  width: var(--book-w);
+  aspect-ratio: 1190 / 842;
+  touch-action: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.curl-page {
+  box-sizing: border-box;
+  overflow: hidden;
+  color: #111;
+  background: var(--turn-page-background);
+}
+
+.curl-book--reading {
+  --turn-page-background: var(--chapter-page-bg, var(--warm-white));
+}
+
+.curl-book--reading .curl-page {
+  color: var(--chapter-copy-ink, var(--ink));
+}
+
+.curl-book--waiting {
+  display: grid;
+  place-items: center;
+  color: var(--chapter-copy-ink, var(--ink));
+  background: var(--chapter-page-bg, var(--warm-white));
+  border-radius: 3px 9px 9px 3px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}
+
+.chapter-waiting {
+  max-width: 26ch;
+  padding: 2rem;
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.chapter-waiting__sparkle {
+  display: block;
+  margin-bottom: 0.25em;
+  font-size: 2.5em;
+  color: var(--chapter-accent, var(--coral));
+}
+
+.chapter-locator-warning {
+  max-width: min(90%, 32rem);
+  margin: -8px 0 0;
+  font-size: 0.75rem;
+  color: color-mix(in oklch, var(--gold) 70%, var(--desk-foreground));
+  text-align: center;
+}
+
+.curl-page--blank {
+  --turn-page-background: transparent;
+}
+
+.book-controls {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: color-mix(in oklch, var(--desk-foreground) 78%, transparent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.book-controls button {
+  color: inherit;
+}
+
+.chapter-book-stage::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.2;
+}
+
+.chapter-book-stage {
+  --book-w: clamp(300px, min(92cqw, (100cqh - 120px) * 1.413), 1120px);
+  --chapter-accent: var(--coral-dark);
+  --chapter-code-bg: oklch(0.92 0.02 84);
+  --chapter-code-ink: var(--ink-soft);
+  --chapter-copy-ink: var(--ink);
+  --chapter-line: oklch(0.26 0.024 60 / 18%);
+  --chapter-link: var(--chapter-copy-ink);
+  --chapter-link-hover: var(--coral-dark);
+  --chapter-muted: oklch(0.52 0.02 70);
+  --chapter-page-bg: oklch(0.975 0.014 88);
+  --chapter-selection-bg: color-mix(in oklch, var(--gold) 72%, transparent);
+  --chapter-selection-ink: var(--ink);
+  --chapter-highlight: color-mix(in oklch, var(--gold) 62%, transparent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  color: var(--desk-foreground);
+  background:
+    radial-gradient(82% 110% at 46% 42%, oklch(1 0 0 / 7%), transparent 58%),
+    radial-gradient(
+      124% 147% at 34% 35%,
+      color-mix(in oklch, var(--desk) 80%, white) 0%,
+      var(--desk) 55%,
+      color-mix(in oklch, var(--desk) 82%, black) 100%
+    );
+  isolation: isolate;
+}
+
+.chapter-book-stage::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background-image: var(--grain);
+  opacity: 0.18;
+}
+
+.chapter-book-stage .curl-book {
+  flex: none;
+}
+
+.chapter-cover,
+.chapter-end {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10% 9% 8%;
+  overflow: hidden;
+  color: var(--chapter-copy-ink);
+  background:
+    radial-gradient(
+      90% 84% at 90% 100%,
+      rgba(217, 107, 69, 0.12),
+      transparent 58%
+    ),
+    linear-gradient(146deg, transparent 56%, rgba(232, 201, 106, 0.16)),
+    var(--chapter-page-bg);
+}
+
+.chapter-cover::before {
+  position: absolute;
+  right: -16%;
+  bottom: -7%;
+  font-size: calc(var(--book-w) * 0.31);
+  font-weight: 900;
+  line-height: 0.7;
+  color: var(--chapter-accent);
+  letter-spacing: -0.1em;
+  content: "L";
+  opacity: 0.95;
+}
+
+.chapter-cover > div,
+.chapter-cover > strong,
+.chapter-end > * {
+  position: relative;
+  z-index: 1;
+}
+
+.chapter-cover span,
+.chapter-end > span {
+  display: block;
+  font-size: calc(var(--book-w) * 0.012);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chapter-cover h2,
+.chapter-end h2 {
+  max-width: 8.6ch;
+  margin: 12% 0 0;
+  font-size: calc(var(--book-w) * 0.05);
+  font-weight: 850;
+  line-height: 0.91;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.chapter-cover p,
+.chapter-end p {
+  max-width: 24ch;
+  margin: 8% 0 0;
+  font-size: calc(var(--book-w) * 0.014);
+  font-weight: 550;
+  line-height: 1.35;
+}
+
+.chapter-cover > strong,
+.chapter-end > strong {
+  align-self: flex-start;
+  font-size: calc(var(--book-w) * 0.018);
+  font-weight: 850;
+  color: var(--chapter-accent);
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+}
+
+.chapter-end {
+  justify-content: flex-start;
+}
+
+.chapter-end::after {
+  position: absolute;
+  right: -5%;
+  bottom: 4%;
+  font-size: calc(var(--book-w) * 0.12);
+  font-weight: 900;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--chapter-copy-ink);
+  letter-spacing: -0.08em;
+  content: "END";
+  writing-mode: vertical-rl;
+}
+
+.chapter-end > strong {
+  margin-top: auto;
+}
+
+.chapter-page {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 9% 10% 8%;
+  overflow: hidden;
+}
+
+.chapter-page__copy {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.chapter-copy {
+  font-family: var(--font-book);
+  font-size: clamp(
+    11px,
+    calc(var(--book-w) * 0.016 * var(--font-scale, 1)),
+    18px
+  );
+  line-height: 1.52;
+  color: var(--chapter-copy-ink);
+  overflow-wrap: anywhere;
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.chapter-copy * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.chapter-copy::selection,
+.chapter-copy *::selection {
+  color: var(--chapter-selection-ink);
+  -webkit-text-fill-color: var(--chapter-selection-ink);
+  background: var(--chapter-selection-bg);
+}
+
+::highlight(leaflet-annotation) {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--chapter-accent, #ae4d30);
+  text-underline-offset: 0.12em;
+  background-color: var(--chapter-highlight, rgba(232, 201, 106, 0.55));
+}
+
+.chapter-annotation-mark {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--chapter-accent);
+  background: var(--chapter-highlight, rgba(232, 201, 106, 0.55));
+}
+
+.dark .chapter-book-stage {
+  --chapter-accent: oklch(0.74 0.15 42);
+  --chapter-code-bg: oklch(0.3 0.018 66);
+  --chapter-code-ink: oklch(0.9 0.02 86);
+  --chapter-copy-ink: oklch(0.9 0.022 86);
+  --chapter-line: oklch(0.9 0.02 86 / 22%);
+  --chapter-link: var(--chapter-copy-ink);
+  --chapter-link-hover: var(--gold);
+  --chapter-muted: oklch(0.7 0.02 80);
+  --chapter-page-bg: oklch(0.27 0.018 68);
+  --chapter-selection-bg: color-mix(in oklch, var(--gold) 38%, transparent);
+  --chapter-selection-ink: oklch(0.97 0.015 88);
+  --chapter-highlight: color-mix(in oklch, var(--gold) 34%, transparent);
+}
+
+.dark .chapter-cover,
+.dark .chapter-end {
+  background:
+    radial-gradient(
+      90% 84% at 90% 100%,
+      rgba(232, 201, 106, 0.1),
+      transparent 58%
+    ),
+    linear-gradient(146deg, transparent 56%, rgba(217, 107, 69, 0.07)),
+    var(--chapter-page-bg);
+}
+
+.chapter-copy :is(p, blockquote, ul, ol, dl, pre, table, figure, hr) {
+  margin: 0 0 0.88em;
+}
+
+.chapter-copy p:has(> small:only-child) {
+  margin-bottom: 1.35em;
+  font-family: "Avenir Next", "Gill Sans", sans-serif;
+  font-size: 0.68em;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--chapter-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.chapter-copy h1 {
+  margin: 0 0 0.7em;
+  font-family: "Avenir Next", "Gill Sans", sans-serif;
+  font-size: 2.55em;
+  font-weight: 850;
+  line-height: 0.91;
+  color: var(--chapter-copy-ink);
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+
+.chapter-copy :is(h2, h3, h4, h5, h6) {
+  margin: 1.2em 0 0.48em;
+  font-family: "Avenir Next", "Gill Sans", sans-serif;
+  font-size: 1.42em;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--chapter-copy-ink);
+  letter-spacing: -0.04em;
+}
+
+.chapter-copy :is(h3, h4, h5, h6) {
+  font-size: 1.16em;
+}
+
+.chapter-copy p {
+  text-align: start;
+}
+
+.chapter-copy
+  p.chapter-copy__lead:not(
+    .chapter-copy__continued,
+    :has(> small:only-child)
+  )::first-letter {
+  float: left;
+  margin: 0.08em 0.1em 0 0;
+  font-size: 3.25em;
+  font-weight: 650;
+  line-height: 0.72;
+  color: var(--chapter-accent);
+}
+
+.chapter-copy blockquote {
+  padding: 0.2em 0 0.2em 0.85em;
+  margin: 1.15em 0;
+  font-size: 1.08em;
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.4;
+  border-left: 2px solid var(--chapter-accent);
+}
+
+.chapter-copy :is(ul, ol) {
+  padding-left: 1.35em;
+}
+
+.chapter-copy li {
+  margin-bottom: 0.24em;
+}
+
+.chapter-copy li::marker {
+  color: var(--chapter-muted);
+}
+
+.chapter-copy dt {
+  font-weight: 700;
+}
+
+.chapter-copy dd {
+  margin: 0 0 0.4em 1.1em;
+}
+
+.chapter-copy pre {
+  padding: 0.7em;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78em;
+  line-height: 1.4;
+  color: var(--chapter-code-ink);
+  white-space: pre-wrap;
+  background: var(--chapter-code-bg);
+  border: 1px solid var(--chapter-line);
+}
+
+.chapter-copy :is(code, kbd, samp) {
+  padding: 0.1em 0.25em;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.84em;
+  color: var(--chapter-code-ink);
+  background: var(--chapter-code-bg);
+  border-radius: 2px;
+}
+
+:root:not(.dark) .chapter-copy :is(pre, code, kbd, samp),
+:root:not(.dark) .chapter-copy :is(pre, code, kbd, samp) * {
+  color: var(--chapter-code-ink) !important;
+  -webkit-text-fill-color: currentcolor !important;
+  opacity: 1 !important;
+}
+
+.chapter-copy pre code {
+  padding: 0;
+  font-size: 1em;
+  background: none;
+}
+
+.chapter-copy figcaption,
+.chapter-copy small {
+  color: var(--chapter-muted);
+}
+
+.chapter-copy figcaption {
+  font-family: "Avenir Next", "Gill Sans", sans-serif;
+  font-size: 0.72em;
+  line-height: 1.35;
+}
+
+.chapter-copy :is(img, svg, video, math) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: calc(var(--reader-page-height, 600px) * 0.68);
+  margin-inline: auto;
+}
+
+.chapter-copy :is(figure, picture) {
+  max-width: 100%;
+}
+
+.chapter-copy :is(img, svg, video) {
+  object-fit: contain;
+}
+
+.chapter-copy table {
+  width: 100%;
+  font-size: 0.86em;
+  border-collapse: collapse;
+}
+
+.chapter-copy :is(th, td) {
+  padding: 0.3em 0.5em;
+  text-align: start;
+  border: 1px solid var(--chapter-line);
+}
+
+.chapter-copy th {
+  font-weight: 700;
+}
+
+.chapter-copy hr {
+  height: 0;
+  border: 0;
+  border-top: 1px solid currentcolor;
+  opacity: 0.28;
+}
+
+.chapter-copy :is(sup, sub) {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+.chapter-copy__continued {
+  margin-top: 0;
+}
+
+.chapter-copy a {
+  color: var(--chapter-link);
+  text-decoration-thickness: 0.08em;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--chapter-accent) 62%,
+    transparent
+  );
+  text-underline-offset: 0.15em;
+}
+
+.chapter-copy a:hover {
+  color: var(--chapter-link-hover);
+  text-decoration-thickness: 0.13em;
+}
+
+.chapter-page__number {
+  position: absolute;
+  right: 10%;
+  bottom: 3.2%;
+  font-family: "Avenir Next", "Gill Sans", sans-serif;
+  font-size: calc(var(--book-w) * 0.0095);
+  font-weight: 700;
+  color: var(--chapter-muted);
+  letter-spacing: 0.08em;
+}
+
+.chapter-page__notes {
+  position: absolute;
+  bottom: 3%;
+  left: 9%;
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  line-height: 1;
+  color: var(--chapter-accent);
+}
+
+.chapter-paginator {
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+  visibility: hidden;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.curl-page > .chapter-cover,
+.curl-page > .chapter-end {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+/* One page per view on phones: the book is a single portrait leaf and the
+   type scale, which is derived from the book width, is doubled to match. */
+@media (max-width: 767px) {
+  .chapter-book-stage {
+    --book-w: clamp(220px, min(94cqw, (100cqh - 92px) * 0.7067), 640px);
+    gap: 10px;
+  }
+
+  .curl-book--single {
+    aspect-ratio: 595 / 842;
+  }
+
+  .chapter-page {
+    padding: 8% 8% 7%;
+  }
+
+  .chapter-copy {
+    font-size: clamp(
+      13px,
+      calc(var(--book-w) * 0.034 * var(--font-scale, 1)),
+      19px
+    );
+  }
+
+  .chapter-page__number {
+    font-size: calc(var(--book-w) * 0.02);
+  }
+
+  .chapter-cover span,
+  .chapter-end > span {
+    font-size: calc(var(--book-w) * 0.026);
+  }
+
+  .chapter-cover h2,
+  .chapter-end h2 {
+    font-size: calc(var(--book-w) * 0.1);
+  }
+
+  .chapter-cover p,
+  .chapter-end p {
+    font-size: calc(var(--book-w) * 0.03);
+  }
+
+  .chapter-cover > strong,
+  .chapter-end > strong {
+    font-size: calc(var(--book-w) * 0.036);
+  }
+
+  .chapter-cover::before {
+    font-size: calc(var(--book-w) * 0.62);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Selection toolbar (floats over the selected passage)               */
+/* ------------------------------------------------------------------ */
+
+.selection-toolbar {
+  position: fixed;
+  z-index: 70;
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+  padding: 4px;
+  font-family: var(--font-ui);
+  color: var(--card-foreground);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow-lift);
+  transform-origin: center bottom;
+}
+
+.selection-toolbar[data-below="true"] {
+  transform-origin: center top;
+}
+
+.selection-toolbar__button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  transition:
+    background-color 160ms var(--ease-out-quart),
+    color 160ms var(--ease-out-quart),
+    transform 160ms var(--ease-out-quart);
+}
+
+.selection-toolbar__button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.selection-toolbar__button:hover:not(:disabled),
+.selection-toolbar__button:focus-visible {
+  outline: none;
+  background: color-mix(in oklch, var(--foreground) 8%, transparent);
+}
+
+.selection-toolbar__button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.selection-toolbar__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.selection-toolbar__button--gold svg {
+  color: var(--gold-foreground);
+  fill: color-mix(in oklch, var(--gold) 70%, transparent);
+}
+
+.selection-toolbar__button--coral svg {
+  color: var(--coral);
+  fill: color-mix(in oklch, var(--coral) 35%, transparent);
+}
+
+@media (max-width: 767px) {
+  .selection-toolbar__button span {
+    display: none;
+  }
+
+  .selection-toolbar__button {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+
+  .selection-toolbar__button svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Phone action bar under the book                                     */
+/* ------------------------------------------------------------------ */
+
+.mobile-bar {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.mobile-bar__action {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 6px 0;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  background: transparent;
+  border: 0;
+  transition: color 160ms var(--ease-out-quart);
+}
+
+.mobile-bar__action:active {
+  color: var(--coral);
+}
